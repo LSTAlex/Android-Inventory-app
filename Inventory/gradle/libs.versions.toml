@@ -17,6 +17,7 @@ protoliteWellKnownTypes = "18.0.1"
 firebaseDatabaseKtx = "22.0.0"
 uiText = "1.9.0"
 foundationLayout = "1.9.0"
+carUiLib = "2.6.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +42,7 @@ androidx-ui-unit = { group = "androidx.compose.ui", name = "ui-unit", version.re
 protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
 androidx-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
 androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
+car-ui-lib = { group = "com.android.car.ui", name = "car-ui-lib", version.ref = "carUiLib" }
 
 
 [plugins]

@@ -10,6 +10,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import sk.inventory.models.ChangePasswordRequest
+import sk.inventory.models.CreateUserRequest
 import sk.inventory.models.LoginRequest
 import sk.inventory.models.LoginResponse
 import sk.inventory.models.WorkplaceCreateDto
@@ -46,4 +47,6 @@ interface ApiService {
         @Query("pageSize") pageSize: Int = 10
     ): Response<Map<String, Any?>> // Возвращает JSON с total, page, data
 
+    @POST("api/auth/register")
+    suspend fun registerUser(@Body dto: CreateUserRequest): Response<Void>
 }

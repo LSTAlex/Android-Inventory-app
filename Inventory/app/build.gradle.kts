@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "sk.inventory"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.protolite.well.known.types)
     implementation(libs.androidx.ui.text)
     implementation(libs.androidx.foundation.layout)
+    implementation(libs.car.ui.lib)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

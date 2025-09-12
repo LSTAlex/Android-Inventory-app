@@ -22,9 +22,6 @@ object RetrofitClient {
     private const val BASE_URL = "https://10.10.1.137:5163/"
     private var context: Context? = null
 
-    // Ключи для SharedPreferences
-    private const val KEY_TOKEN_ISSUED_AT = "token_issued_at"
-
     private val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
         override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
         override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
@@ -42,17 +39,53 @@ object RetrofitClient {
     }
 
     private fun isTokenExpired(token: String?): Boolean {
-        if (token.isNullOrEmpty()) return true
+        if (token.isNullOrEmpty() || !token.contains(".")) return true  // Базовая проверка валидности JWT
+
+        // Логируем токен для диагностики (удалите в production)
+        Log.d("RetrofitClient", "Token for parsing: $token")
+
         return try {
-            val payload = token.split(".")[1]  // Вторая часть JWT — payload
-            val normalizedPayload = payload.padEnd((payload.length / 4 * 4) + 4, '=')  // Padding для Base64
-            val decodedBytes = Base64.decode(normalizedPayload, Base64.URL_SAFE or Base64.NO_WRAP)
-            val json = JsonParser.parseString(String(decodedBytes)).asJsonObject
-            val iat = json.getAsJsonPrimitive("iat").asLong * 1000  // Issued at в ms
+            val parts = token.split(".")
+            if (parts.size != 3) {
+                Log.e("RetrofitClient", "Invalid JWT structure: ${parts.size} parts")
+                return true
+            }
+
+            val payload = parts[1]  // Вторая часть JWT — payload
+            Log.d("RetrofitClient", "Payload: $payload")
+
+            // Правильный padding для Base64 URL-safe
+            val normalizedPayload = when (payload.length % 4) {
+                0 -> payload
+                2 -> payload + "=="
+                3 -> payload + "="
+                else -> {
+                    Log.e("RetrofitClient", "Invalid base64 length: ${payload.length}")
+                    return true
+                }
+            }
+
+            val decodedBytes = Base64.decode(normalizedPayload, Base64.URL_SAFE)
+            Log.d("RetrofitClient", "Decoded payload length: ${decodedBytes.size}")
+
+            val jsonString = String(decodedBytes)
+            Log.d("RetrofitClient", "JSON payload: $jsonString")
+
+            val json = JsonParser.parseString(jsonString).asJsonObject
+            val expJson = json.getAsJsonPrimitive("exp")  // Используем exp вместо iat
+            if (expJson == null) {
+                Log.e("RetrofitClient", "No 'exp' field in token")
+                return true
+            }
+
+            val exp = expJson.asLong * 1000  // exp в секундах * 1000 = ms
             val now = Date().time
-            now > (iat + 60 * 60 * 1000)  // 1 час = 3600000 ms
+            val expired = now > exp
+            Log.d("RetrofitClient", "Token exp: $exp, now: $now, expired: $expired")
+
+            expired
         } catch (e: Exception) {
-            Log.e("RetrofitClient", "Token parse error", e)
+            Log.e("RetrofitClient", "Token parse error: ${e.message}", e)
             true  // Если ошибка — считаем истёкшим
         }
     }
@@ -60,7 +93,7 @@ object RetrofitClient {
     private val authInterceptor = Interceptor { chain ->
         val original = chain.request()
         val token = context?.let { PreferencesManager.getToken(it) }
-        val request = if (token != null) {
+        val request = if (token != null && !isTokenExpired(token)) {
             original.newBuilder()
                 .header("Authorization", "Bearer $token")
                 .build()
@@ -70,8 +103,8 @@ object RetrofitClient {
 
         val response = chain.proceed(request)
 
-        // Проверка на истечение токена
-        if (token != null && isTokenExpired(token)) {
+        // Проверка на истечение токена после запроса (только если токен был добавлен)
+        if (response.code == 401 && token != null && isTokenExpired(token)) {
             context?.let {
                 PreferencesManager.clear(it)  // Очистить токен и роль
                 Log.w("RetrofitClient", "Token expired after 1 hour, performing logoff")
@@ -115,9 +148,15 @@ object RetrofitClient {
         }
         // Проверка истечения токена при создании клиента
         val token = PreferencesManager.getToken(context)
-        if (token != null && isTokenExpired(token)) {
-            PreferencesManager.clear(context)
-            Log.w("RetrofitClient", "Token expired on initialization, performing logoff")
+        if (token != null) {
+            if (isTokenExpired(token)) {
+                PreferencesManager.clear(context)
+                Log.w("RetrofitClient", "Token expired on initialization, performing logoff")
+            } else {
+                Log.d("RetrofitClient", "Token is valid")
+            }
+        } else {
+            Log.d("RetrofitClient", "No token found")
         }
         return apiService
     }
