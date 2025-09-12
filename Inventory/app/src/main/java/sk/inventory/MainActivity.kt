@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -35,7 +34,6 @@ class MainActivity : ComponentActivity() {
                 val drawerState = rememberDrawerState(DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
-                // Устанавливаем начальную роль из Preferences
                 LaunchedEffect(Unit) {
                     val role = PreferencesManager.getRole(this@MainActivity)
                     viewModel.setRole(role)
@@ -60,6 +58,7 @@ class MainActivity : ComponentActivity() {
                                     "Найти" -> navController.navigate("find_workspace")
                                     "Рабочие места" -> navController.navigate("workplaces")
                                     "Создать пользователя" -> navController.navigate("create_user")
+                                    "Управление пользователями" -> navController.navigate("users")
                                 }
                             }
                         }
@@ -79,6 +78,7 @@ class MainActivity : ComponentActivity() {
                             composable("find_workspace") { FindWorkspaceScreen(navController) }
                             composable("workplaces") { WorkplacesScreen(navController) }
                             composable("create_user") { CreateUserScreen(navController) }
+                            composable("users") { UsersScreen(navController) }
                         }
                     }
                 }

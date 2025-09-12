@@ -136,6 +136,12 @@ fun WorkplacesScreen(navController: NavController) {
                         textAlign = TextAlign.Center
                     )
                     Text(
+                        "Кем создано",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(2f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
                         "Создано",
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(2f),
@@ -194,6 +200,11 @@ fun WorkplacesScreen(navController: NavController) {
                                 )
                                 Text(
                                     it.Telephone,
+                                    modifier = Modifier.weight(2f),
+                                    textAlign = TextAlign.Center
+                                )
+                                Text(
+                                    it.CreatedBy ?: "-",
                                     modifier = Modifier.weight(2f),
                                     textAlign = TextAlign.Center
                                 )

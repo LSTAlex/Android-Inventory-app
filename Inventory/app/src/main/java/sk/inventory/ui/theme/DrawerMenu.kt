@@ -27,20 +27,16 @@ fun DrawerMenu(
         Log.d("DrawerMenu", "Rendering menu with role: $currentRole")
 
         val menuItems = buildList {
-            // Вкладка "Найти" доступна всем ролям
             add(MenuItem("Найти", Icons.Default.Search))
-
-            // Вкладки для Admin и SAdmin
             if (currentRole in listOf("Admin", "SAdmin")) {
                 add(MenuItem("Создать рабочее место", Icons.Default.Add))
                 add(MenuItem("Удалить рабочее место", Icons.Default.Delete))
                 add(MenuItem("Изменить рабочее место", Icons.Default.Edit))
                 add(MenuItem("Рабочие места", Icons.Default.List))
             }
-
-            // Вкладка "Создать пользователя" только для SAdmin
             if (currentRole == "SAdmin") {
                 add(MenuItem("Создать пользователя", Icons.Default.PersonAdd))
+                add(MenuItem("Управление пользователями", Icons.Default.People))
             }
         }
 
@@ -54,7 +50,7 @@ fun DrawerMenu(
                 onClick = {
                     scope.launch {
                         onMenuItemClick(item.label)
-                        if (item.label !in listOf("Найти", "Создать рабочее место", "Удалить рабочее место", "Рабочие места", "Создать пользователя")) {
+                        if (item.label !in listOf("Найти", "Создать рабочее место", "Удалить рабочее место", "Рабочие места", "Создать пользователя", "Управление пользователями")) {
                             Toast.makeText(context, "Функция в разработке", Toast.LENGTH_SHORT).show()
                         }
                     }

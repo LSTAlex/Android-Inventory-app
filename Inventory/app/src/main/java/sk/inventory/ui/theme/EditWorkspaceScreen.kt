@@ -146,11 +146,12 @@ fun EditWorkspaceScreen(navController: NavController) {
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TextField(
-                        value = editName,
-                        onValueChange = { editName = it },
-                        label = { Text("Имя") },
-                        modifier = Modifier.fillMaxWidth()
+                    Text(
+                        text = "Имя: ${wp.Name}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     TextField(

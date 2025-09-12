@@ -13,6 +13,7 @@ import sk.inventory.models.ChangePasswordRequest
 import sk.inventory.models.CreateUserRequest
 import sk.inventory.models.LoginRequest
 import sk.inventory.models.LoginResponse
+import sk.inventory.models.UserResponseDto
 import sk.inventory.models.WorkplaceCreateDto
 import sk.inventory.models.WorkplaceResponse
 
@@ -28,9 +29,6 @@ interface ApiService {
 
     @GET("api/workplace/{id}/qr")
     suspend fun getQrCode(@Path("id") id: Int): Response<ResponseBody>
-
-    @DELETE("api/workplace/{id}")
-    suspend fun deleteWorkplace(@Path("id") id: Int): Response<Unit>
 
     @DELETE("api/workplace/name/{name}")
     suspend fun deleteWorkplaceByName(@Path("name") name: String): Response<Unit>
@@ -49,4 +47,10 @@ interface ApiService {
 
     @POST("api/auth/register")
     suspend fun registerUser(@Body dto: CreateUserRequest): Response<Void>
+
+    @GET("api/auth/users")
+    suspend fun getUsers(): Response<List<UserResponseDto>>
+
+    @DELETE("api/auth/users/{id}")
+    suspend fun deleteUser(@Path("id") id: Int): Response<Unit>
 }
