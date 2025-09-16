@@ -1,4 +1,4 @@
-package sk.inventory.ui.screens
+package sk.inventory.ui.theme
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*

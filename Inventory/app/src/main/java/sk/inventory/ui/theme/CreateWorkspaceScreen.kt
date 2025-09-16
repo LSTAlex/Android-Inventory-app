@@ -1,4 +1,4 @@
-package sk.inventory.ui.screens
+package sk.inventory.ui.theme
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -189,11 +189,16 @@ fun CreateWorkspaceScreen(navController: NavController) {
                 ) {
                     Button(
                         onClick = {
-                            val intent = Intent(Intent.ACTION_SEND).apply {
+                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                            val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "QR Code", null)
+                            val uri = Uri.parse(path)
+
+                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                 type = "image/png"
-                                putExtra(Intent.EXTRA_STREAM, Uri.parse(MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "QR Code", null)))
+                                putExtra(Intent.EXTRA_STREAM, uri)
+                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             }
-                            context.startActivity(Intent.createChooser(intent, "Поделиться QR-кодом"))
+                            context.startActivity(Intent.createChooser(shareIntent, "Поделиться QR-кодом"))
                         },
                         modifier = Modifier
                             .weight(1f)

@@ -1,4 +1,4 @@
-package sk.inventory.ui.screens
+package sk.inventory.ui.theme
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -352,19 +352,19 @@ fun FindWorkspaceScreen(navController: NavController) {
                                             onClick = {
                                                 val shareBitmap = BitmapFactory.decodeByteArray(qrCodeBytes!!, 0, qrCodeBytes!!.size)
                                                 if (shareBitmap != null) {
+                                                    val imageUri = Uri.parse(
+                                                        MediaStore.Images.Media.insertImage(
+                                                            context.contentResolver,
+                                                            shareBitmap,
+                                                            "QR Code",
+                                                            null
+                                                        )
+                                                    )
+
                                                     val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                                         type = "image/*"
-                                                        putExtra(
-                                                            Intent.EXTRA_STREAM,
-                                                            Uri.parse(
-                                                                MediaStore.Images.Media.insertImage(
-                                                                    context.contentResolver,
-                                                                    shareBitmap,
-                                                                    "QR Code",
-                                                                    null
-                                                                )
-                                                            )
-                                                        )
+                                                        putExtra(Intent.EXTRA_STREAM, imageUri)
+                                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                                     }
                                                     context.startActivity(Intent.createChooser(shareIntent, "Поделиться QR-кодом"))
                                                 }

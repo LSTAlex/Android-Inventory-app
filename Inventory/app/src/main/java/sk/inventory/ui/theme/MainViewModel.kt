@@ -1,4 +1,4 @@
-package sk.inventory.viewmodel
+package sk.inventory.ui.theme
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

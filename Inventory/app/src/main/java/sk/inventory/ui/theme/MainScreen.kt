@@ -1,4 +1,4 @@
-package sk.inventory.ui.screens
+package sk.inventory.ui.theme
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import kotlinx.coroutines.launch
-import sk.inventory.ui.theme.InventoryTheme
 import sk.inventory.utils.PreferencesManager
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)

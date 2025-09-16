@@ -12,12 +12,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
-import sk.inventory.ui.screens.*
 import sk.inventory.ui.theme.DrawerMenu
 import sk.inventory.ui.theme.InventoryTheme
 import sk.inventory.utils.PreferencesManager
 import sk.inventory.api.RetrofitClient
-import sk.inventory.viewmodel.MainViewModel
+import sk.inventory.ui.theme.CreateUserScreen
+import sk.inventory.ui.theme.CreateWorkspaceScreen
+import sk.inventory.ui.theme.DeleteWorkspaceScreen
+import sk.inventory.ui.theme.EditWorkspaceScreen
+import sk.inventory.ui.theme.FindWorkspaceScreen
+import sk.inventory.ui.theme.LoginScreen
+import sk.inventory.ui.theme.MainScreen
+import sk.inventory.ui.theme.MainViewModel
+import sk.inventory.ui.theme.UsersScreen
+import sk.inventory.ui.theme.WorkplacesScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {

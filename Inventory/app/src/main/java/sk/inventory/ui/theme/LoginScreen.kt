@@ -1,4 +1,4 @@
-package sk.inventory.ui.screens
+package sk.inventory.ui.theme
 
 import android.content.Context
 import android.util.Log
@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 import sk.inventory.api.RetrofitClient
 import sk.inventory.models.LoginRequest
 import sk.inventory.utils.PreferencesManager
-import sk.inventory.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

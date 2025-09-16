@@ -1,4 +1,4 @@
-package sk.inventory.ui.screens
+package sk.inventory.ui.theme
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons

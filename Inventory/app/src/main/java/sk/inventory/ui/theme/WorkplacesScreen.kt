@@ -1,9 +1,8 @@
-package sk.inventory.ui.screens
+package sk.inventory.ui.theme
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -16,11 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.LoadState
 import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import sk.inventory.api.RetrofitClient
-import sk.inventory.models.WorkplaceResponse
 import sk.inventory.models.WorkplacesPagingSource
 import sk.inventory.utils.PreferencesManager
 import java.text.SimpleDateFormat
@@ -48,7 +47,7 @@ fun WorkplacesScreen(navController: NavController) {
 
     // Создание Pager для загрузки данных с явным управлением размером
     val lazyPagingItems = Pager(
-        config = androidx.paging.PagingConfig(
+        config = PagingConfig(
             pageSize = 10,
             initialLoadSize = 10 // Установим initialLoadSize равным pageSize
         )
@@ -221,16 +220,16 @@ fun WorkplacesScreen(navController: NavController) {
                 // Индикатор загрузки
                 item {
                     when (lazyPagingItems.loadState.refresh) {
-                        is androidx.paging.LoadState.Loading -> {
+                        is LoadState.Loading -> {
                             CircularProgressIndicator(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .wrapContentWidth(Alignment.CenterHorizontally)
                             )
                         }
-                        is androidx.paging.LoadState.Error -> {
+                        is LoadState.Error -> {
                             Text(
-                                text = "Ошибка загрузки: ${(lazyPagingItems.loadState.refresh as androidx.paging.LoadState.Error).error.message}",
+                                text = "Ошибка загрузки: ${(lazyPagingItems.loadState.refresh as LoadState.Error).error.message}",
                                 color = MaterialTheme.colorScheme.error,
                                 modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.CenterHorizontally)
                             )
@@ -238,16 +237,16 @@ fun WorkplacesScreen(navController: NavController) {
                         else -> {}
                     }
                     when (lazyPagingItems.loadState.append) {
-                        is androidx.paging.LoadState.Loading -> {
+                        is LoadState.Loading -> {
                             CircularProgressIndicator(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .wrapContentWidth(Alignment.CenterHorizontally)
                             )
                         }
-                        is androidx.paging.LoadState.Error -> {
+                        is LoadState.Error -> {
                             Text(
-                                text = "Ошибка подгрузки: ${(lazyPagingItems.loadState.append as androidx.paging.LoadState.Error).error.message}",
+                                text = "Ошибка подгрузки: ${(lazyPagingItems.loadState.append as LoadState.Error).error.message}",
                                 color = MaterialTheme.colorScheme.error,
                                 modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.CenterHorizontally)
                             )

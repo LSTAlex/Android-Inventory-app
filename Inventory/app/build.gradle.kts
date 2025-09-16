@@ -36,6 +36,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
@@ -58,6 +59,8 @@ dependencies {
     implementation(libs.androidx.ui.text)
     implementation(libs.androidx.foundation.layout)
     implementation(libs.car.ui.lib)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.play.services.ads)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
